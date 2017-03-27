@@ -1,7 +1,8 @@
 # Setting up the `core` folder
 Create a folder called `./core/`. In this folder add a file called `init.php`. In this file you will have to add the following content:
 
-`<?php
+```
+<?php
 	session_start();
 
 	$GLOBALS['config'] = array(
@@ -36,4 +37,5 @@ Create a folder called `./core/`. In this folder add a file called `init.php`. I
 
 	spl_autoload_register(function($class) {
 		require_once 'classes/' . $class . '.php';
-	});`
+	});
+```
