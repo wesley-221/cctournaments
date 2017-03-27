@@ -1,0 +1,51 @@
+* {
+	border-radius: 0 !important;
+}
+
+.twitter > .panel-heading {
+	background-color: #0084b4;
+	border: 1px solid #0084b4;
+}
+.twitch > .panel-heading {
+	background-color: #6441a5;
+	border: 1px solid #6441a5;
+}
+
+.youtube > .panel-heading {
+	background-color: #bb0000;
+	border: 1px solid #bb0000;
+}
+
+.twitter {
+	border: 1px solid #0084b4;
+}
+
+.twitch {
+	border: 1px solid #6441a5;
+}
+
+.youtube {
+	border: 1px solid #bb0000;
+}
+
+
+.banner {
+	background-color: black;
+	height: 120px;
+
+	display: flex;
+  	justify-content: flex-end;
+}
+
+.bannerContent {
+	padding-right: 15px;
+	align-self: center;
+}
+
+.extraSpacing3 {
+	padding: 3px;
+}
+
+.extraSpacing10 {
+	padding: 10px;
+}
