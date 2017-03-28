@@ -240,25 +240,6 @@
 	<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 	<script src= "https://player.twitch.tv/js/embed/v1.js"></script>
 	<script>
-		var options = {
-			channel: "customallosu",
-			width: "100%"
-		};
-
-		var player = new Twitch.Player("twitchDiv", options);
-		//
-		// function showVideo(response) {
-        //     if(response.data && response.data.items) {
-        //         var items = response.data.items;
-        //         if(items.length>0) {
-        //             var item = items[0];
-        //             var videoid = "http://www.youtube.com/embed/"+item.id;
-        //             console.log("Latest ID: '"+videoid+"'");
-        //             var video = "<iframe width='420' height='315' src='"+videoid+"' frameborder='0' allowfullscreen></iframe>";
-        //             $('#youtubeDiv').html(video);
-        //         }
-        //     }
-        // }
+		var player = new Twitch.Player("twitchDiv", {channel: "customallosu", width: "100%"});
 	</script>
-	<!-- <script type="text/javascript" src="https://gdata.youtube.com/feeds/api/users/UC3-XrF1BxnWiBrdM27sZ89g/uploads?max-results=1&orderby=published&v=2&alt=jsonc&callback=showVideo"></script> -->
 </html>

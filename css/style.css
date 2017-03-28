@@ -83,8 +83,10 @@ a.showAllNews {
 	==========================
 */
 .banner {
-	background-color: black;
-	height: 120px;
+	background-image: url('https://puu.sh/v1gBJ.png');
+	background-size: cover;
+	min-height: 120px;
+	max-height: 120px;
 
 	display: flex;
   	justify-content: flex-end;
