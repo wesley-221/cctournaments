@@ -1,5 +1,17 @@
-* {
-	border-radius: 0 !important;
+/*
+	==========================
+	Panel styling
+	==========================
+*/
+.panel, .panel-heading, .panel-body {
+	-webkit-border-radius: 0 !important;
+	   -moz-border-radius: 0 !important;
+			border-radius: 0 !important;
+}
+
+.news > .panel-heading {
+	background-color: #30445D;
+	border: 1px solid #30445D;
 }
 
 .twitter > .panel-heading {
@@ -16,6 +28,10 @@
 	border: 1px solid #bb0000;
 }
 
+.news {
+	border: 1px solid #30445D;
+}
+
 .twitter {
 	border: 1px solid #0084b4;
 }
@@ -28,7 +44,44 @@
 	border: 1px solid #bb0000;
 }
 
+.fixed-panel {
+	min-height: 20vh;
+	max-height: 20vh;
+	overflow-y: auto;
+}
 
+/*
+	==========================
+	News article styling
+	==========================
+*/
+.newsarticle {
+	border: 1px solid black;
+	padding: 3px;
+	width: 100%;
+
+	border-left: 6px solid #62C0DC;
+}
+
+.newstitle {
+	font-size: 15px;
+}
+
+.newsarticle:hover {
+	background-color: #E7E7E7;
+	cursor: pointer;
+}
+
+a.showAllNews {
+	color: white !important;
+	cursor: pointer;
+}
+
+/*
+	==========================
+	Misc styling
+	==========================
+*/
 .banner {
 	background-color: black;
 	height: 120px;
