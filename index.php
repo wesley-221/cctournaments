@@ -1,8 +1,49 @@
+<?php
+	require_once 'core/init.php';
+
+	$db = new Db(Config::get('mysql/host'), Config::get('mysql/db'), Config::get('mysql/username'), Config::get('mysql/password'));
+	$db -> setFetchMode(PDO::FETCH_ASSOC);
+
+	if($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$loginUsername = isset($_POST['loginUsername']) ? $_POST['loginUsername'] : '';
+		$loginPassword = isset($_POST['loginPassword']) ? $_POST['loginPassword'] : '';
+		$hashedPassword = User::hashPassword($loginPassword);
+
+		$validUsername = $db -> fetch('SELECT userid, username, password, salt FROM users WHERE username = ?', [$loginUsername]);
+
+		if($validUsername) {
+			if(!strcmp($validUsername["password"], $hashedPassword)) {
+				$qCookieExist = $db -> fetch('SELECT * FROM cookies WHERE userid = ?', [$validUsername["userid"]]);
+
+				if($qCookieExist)
+					$db -> execute('DELETE FROM cookies WHERE userid = ?', [$validUsername["userid"]]);
+
+				$sCookieValue = User::GenerateCookie($loginUsername);
+				setcookie(Config::get('cookie/cookie_name'), $sCookieValue, strtotime("+1 month"));
+
+				$db -> execute('INSERT into cookies VALUES(?, ?)', [$validUsername["userid"], $sCookieValue]);
+				Header('Location: ./');
+			}
+			else {
+				$showError = array("show" => 2);
+			}
+		}
+		else {
+			$showError = array("show" => 1, "user" => $loginUsername);
+		}
+	}
+
+	$userData = User::authenticate(isset($_COOKIE[Config::get('cookie/cookie_name')]) ? $_COOKIE[Config::get('cookie/cookie_name')] : null);
+	$serverSettings = $db -> fetch('SELECT * FROM serverSettings');
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>Index - CustomAllOsu</title>
+
+		<link rel="shortcut icon" href="./resources/media/favicon.png">
 
 		<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
 		<link href="css/bootstrap.min.css" rel="stylesheet" />
@@ -11,41 +52,21 @@
 	</head>
 
 	<body>
-		<div class="banner">
-			<div class="bannerContent pull-right">
-				<a href="https://twitter.com/CustomAllOsu"><i class="fa fa-twitter fa-5x" style="color: #0084b4;" aria-hidden="true"></i></a>
-				<a href="https://www.twitch.tv/CustomAllOsu"><i class="fa fa-twitch fa-5x" style="color: #6441a5;" aria-hidden="true"></i></a>
-				<a href="https://www.youtube.com/channel/UC3-XrF1BxnWiBrdM27sZ89g"><i class="fa fa-youtube fa-5x" style="color: #bb0000;" aria-hidden="true"></i></a>
-			</div>
-		</div>
-
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="./">CCTournaments</a>
-				</div>
-
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav navbar-left">
-						<li><a href="about.html">About</a></li>
-						<li><a href="#">Ongoing tournaments</a></li>
-						<li><a href="#">Rankings</a></li>
-					</ul>
-
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#" data-toggle="modal" data-target="#loginModal">Have an account? Log in.</a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+		<?php include_once("./resources/includes/banner.php"); ?>
+		<?php include_once("./resources/includes/navbar.php"); ?>
 
 		<div class="container-fluid">
+			<?php
+				if(isset($showError)) {
+					if($showError["show"] == 1) {
+						echo '<div class="alert alert-danger">The user "' . $showError["user"] . '" was not found. Please try again.</div>';
+					}
+					else if($showError["show"] == 2){
+						echo '<div class="alert alert-danger">The password you entered is invalid. Please try again.</div>';
+					}
+				}
+			?>
+
 			<div class="row">
 				<div class="col-lg-8 col-sm-6">
 					<div class="panel panel-primary news">
@@ -177,62 +198,7 @@
 			</div>
 		</div>
 
-		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="loginModalLabel">Login</h4>
-					</div>
-
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-sm-12">
-								<p>Have an account?</p>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="col-sm-2">
-								<label for="loginUsername">Username</label>
-							</div>
-
-							<div class="col-sm-10">
-								<input id="loginUsername" type="text" class="form-control" />
-							</div>
-						</div>
-
-						<div class="extraSpacing3"></div>
-
-						<div class="row">
-							<div class="col-sm-2">
-								<label for="loginUsername">Password</label>
-							</div>
-
-							<div class="col-sm-10">
-								<input id="loginPassword" type="password" class="form-control" />
-							</div>
-						</div>
-
-						<div class="extraSpacing10"></div>
-
-						<div class="row">
-							<div class="col-sm-12">
-								<a href="#" class="btn btn-primary form-control">Log in</a>
-							</div>
-						</div>
-
-						<hr />
-
-						<div class="row">
-							<div class="col-sm-12">
-								<a href="#" class="btn btn-default form-control">Create an account</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<?php include_once('./resources/includes/loginpopup.php'); ?>
 	</body>
 
 	<script src="js/jquery-3.2.0.min.js"></script>

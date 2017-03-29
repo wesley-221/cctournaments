@@ -83,17 +83,22 @@ a.showAllNews {
 	==========================
 */
 .banner {
-	background-image: url('https://puu.sh/v1gBJ.png');
+	/*background-image: url('https://puu.sh/v1gBJ.png');*/
 	background-size: cover;
 	min-height: 120px;
 	max-height: 120px;
+}
 
+.bannerBackdim {
 	display: flex;
   	justify-content: flex-end;
+	min-height: inherit;
+	background-color: rgba(0, 0, 0, 0.2);
 }
 
 .bannerContent {
 	padding-right: 15px;
+	padding-left: 15px;
 	align-self: center;
 }
 
