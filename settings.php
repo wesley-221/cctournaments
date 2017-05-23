@@ -10,13 +10,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
-		<title>Settings - CustomAllOsu</title>
+		<?php include_once("./resources/includes/meta.php"); ?>
+		<?php include_once("./resources/includes/link.php"); ?>
 
-		<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
-		<link href="css/bootstrap.min.css" rel="stylesheet" />
-		<link href="resources/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
-		<link href="css/style.css" rel="stylesheet" />
+		<title>Settings - CustomAllOsu</title>
 	</head>
 
 	<body>
@@ -24,6 +21,11 @@
 		<?php include_once("./resources/includes/navbar.php"); ?>
 
 		<div class="container">
+			<ol class="breadcrumb">
+				<li><a href="./">Home</a></li>
+				<li class="active">Settings</li>
+			</ol>
+
 			<table class="table table-striped">
 				<tbody>
 					<tr>
@@ -38,4 +40,5 @@
 
 	<script src="js/jquery-3.2.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/propeller.min.js"></script>
 </html>

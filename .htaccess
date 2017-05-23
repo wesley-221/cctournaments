@@ -1,0 +1,56 @@
+Options +FollowSymLinks
+Options -MultiViews
+Options All -Indexes
+
+RewriteEngine On
+
+ErrorDocument 404 /error_pages/404
+ErrorDocument 403 /error_pages/403
+ErrorDocument 401 /error_pages/401
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+
+RewriteRule ^$ 																		./index.php
+RewriteRule ^register$																./register.php
+RewriteRule ^logout?\/$																./logout.php
+RewriteRule ^about$																	./about.php
+RewriteRule ^rankings$																./rankings.php
+RewriteRule ^report$																./report.php
+RewriteRule ^report\/([0-9]+)*$														./report.php?r=$1
+RewriteRule ^todo$																	./todo.php
+RewriteRule ^settings$																./settings.php
+RewriteRule ^inbox$																	./inbox.php
+RewriteRule ^inbox\/(tournaments|[0-9]+)$											./inbox.php?p=$1
+RewriteRule ^inbox\/(tournaments|[0-9]+)\/(reply|delete)$							./inbox.php?p=$1&a=$2
+RewriteRule ^inbox\/sendmessage$													./sendmessage.php
+RewriteRule ^news$																	./news.php
+RewriteRule ^news\/([0-9]+)*$	 													./news.php?article=$1
+RewriteRule ^tournaments$															./tournaments.php
+RewriteRule ^tournaments\/(t|mode)\/([0-9]+|std|taiko|catch|mania)*$				./tournaments.php?$1=$2
+RewriteRule ^teams$																	./teams.php
+RewriteRule ^teams\/([0-9]+)*$														./teams.php?t=$1
+RewriteRule ^manageteams$															./manageteams.php
+RewriteRule ^manageteams\/([0-9]+)*$												./manageteams.php?t=$1
+RewriteRule ^createteam$															./createteam.php
+RewriteRule ^jointeam\/([0-9]+)*$													./jointeam.php?t=$1
+
+RewriteRule ^admin$																	./adminpanel.php
+RewriteRule ^admin\/userpanel$														./userpanel.php
+RewriteRule ^admin\/userpanel\/([0-9]+)*$											./userpanel.php?user=$1
+RewriteRule ^admin\/settings$														./serversettings.php
+RewriteRule ^admin\/news$															./managenews.php
+RewriteRule ^admin\/news\/(create|edit)$											./managenews.php?p=$1
+RewriteRule ^admin\/news\/(create|edit)\/([0-9]+)*$									./managenews.php?p=$1&article=$2
+RewriteRule ^admin\/tournaments$													./managetournaments.php
+RewriteRule ^admin\/tournaments\/(create|edit)$										./managetournaments.php?p=$1
+RewriteRule ^admin\/tournaments\/edit\/([0-9]+)*$									./edittournament.php?t=$1
+RewriteRule ^admin\/tournaments\/edit\/([0-9]+)\/(general|participants|settings)*$	./edittournament.php?t=$1&o=$2
+
+RewriteRule ^admin\/reports$														./managereports.php
+
+
+
+
+RewriteRule ^403$																	./error_pages/403.php
+RewriteRule ^401$																	./error_pages/401.php

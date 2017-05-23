@@ -9,19 +9,19 @@
 		$loginPassword = isset($_POST['loginPassword']) ? $_POST['loginPassword'] : '';
 		$hashedPassword = User::hashPassword($loginPassword);
 
-		$validUsername = $db -> fetch('SELECT userid, username, password, salt FROM users WHERE username = ?', [$loginUsername]);
+		$validUsername = $db -> fetch('SELECT userId, username, password, salt FROM users WHERE username = ?', [$loginUsername]);
 
 		if($validUsername) {
 			if(!strcmp($validUsername["password"], $hashedPassword)) {
-				$qCookieExist = $db -> fetch('SELECT * FROM cookies WHERE userid = ?', [$validUsername["userid"]]);
+				$qCookieExist = $db -> fetch('SELECT * FROM cookies WHERE userId = ?', [$validUsername["userId"]]);
 
-				if($qCookieExist)
-					$db -> execute('DELETE FROM cookies WHERE userid = ?', [$validUsername["userid"]]);
+				// if($qCookieExist)
+				// 	$db -> execute('DELETE FROM cookies WHERE userId = ?', [$validUsername["userId"]]);
 
 				$sCookieValue = User::GenerateCookie($loginUsername);
 				setcookie(Config::get('cookie/cookie_name'), $sCookieValue, strtotime("+1 month"));
 
-				$db -> execute('INSERT into cookies VALUES(?, ?)', [$validUsername["userid"], $sCookieValue]);
+				$db -> execute('INSERT into cookies VALUES(?, ?)', [$validUsername["userId"], $sCookieValue]);
 				Header('Location: ./');
 			}
 			else {
@@ -40,15 +40,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<?php include_once("./resources/includes/meta.php"); ?>
+		<?php include_once("./resources/includes/link.php"); ?>
+
 		<title>Index - CustomAllOsu</title>
-
-		<link rel="shortcut icon" href="./resources/media/favicon.png">
-
-		<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
-		<link href="css/bootstrap.min.css" rel="stylesheet" />
-		<link href="resources/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
-		<link href="css/style.css" rel="stylesheet" />
 	</head>
 
 	<body>
@@ -71,82 +66,18 @@
 				<div class="col-lg-8 col-sm-6">
 					<div class="panel panel-primary news">
 						<div class="panel-heading">
-							<h3 class="panel-title">News <span class="pull-right"><a href="#" class="showAllNews">Click here to view all news articles</span></span></h3>
+							<h3 class="panel-title">News <span class="pull-right"><a href="./news" class="showAllNews">Click here to view all news articles</span></span></h3>
 						</div>
 
 						<div class="panel-body">
-							<div class="newsarticle">
-								<div class="newstitle"><a href="#"><b>Dummy title - 03/27/2017</b></a></div>
+							<?php
+								$newsArticles = $db -> fetch('SELECT * FROM news ORDER BY newsId DESC LIMIT 5', null, true);
 
-								<div class="newscontent">
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-								</div>
-							</div>
-
-							<div class="extraSpacing3"></div>
-
-							<div class="newsarticle">
-								<div class="newstitle"><a href="#"><b>Dummy title - 03/27/2017</b></a></div>
-
-								<div class="newscontent">
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-								</div>
-							</div>
-
-							<div class="extraSpacing3"></div>
-
-							<div class="newsarticle">
-								<div class="newstitle"><a href="#"><b>Dummy title - 03/27/2017</b></a></div>
-
-								<div class="newscontent">
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-								</div>
-							</div>
-
-							<div class="extraSpacing3"></div>
-
-							<div class="newsarticle">
-								<div class="newstitle"><a href="#"><b>Dummy title - 03/27/2017</b></a></div>
-
-								<div class="newscontent">
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-								</div>
-							</div>
-
-							<div class="extraSpacing3"></div>
-
-							<div class="newsarticle">
-								<div class="newstitle"><a href="#"><b>Dummy title - 03/27/2017</b></a></div>
-
-								<div class="newscontent">
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-									This is a description of a dummy article. Want to know more? Don't look any further, the future is here.
-								</div>
-							</div>
+								foreach($newsArticles as $newsArticle) {
+									echo '<a style="text-decoration: none;" href="./news/' . $newsArticle["newsId"] . '"><div class="newsarticle"><div class="newstitle"><b>' . $newsArticle["newsTitle"] . ' - ' . date('d/m/Y', strtotime($newsArticle["newsPostDate"])) . '</b></div><div class="newscontent">' . $newsArticle["newsDescription"] . '</div></div></a>';
+									echo '<div class="extraSpacing3"></div>';
+								}
+							?>
 						</div>
 					</div>
 				</div>
@@ -203,6 +134,7 @@
 
 	<script src="js/jquery-3.2.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/propeller.min.js"></script>
 	<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 	<script src= "https://player.twitch.tv/js/embed/v1.js"></script>
 	<script>

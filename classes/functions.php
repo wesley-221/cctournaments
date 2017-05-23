@@ -29,7 +29,7 @@
 				$bytes: the byte you want to convert
 			</summary>
 		*/
-		function formatSizeUnits($bytes)
+		public function formatSizeUnits($bytes)
 	    {
 	        if ($bytes >= 1073741824)
 	        {
@@ -68,7 +68,7 @@
 				You don't have to create a new array to use this
 			</summary>
 		*/
-		function reArrayFiles(&$file_post)
+		public function reArrayFiles(&$file_post)
 		{
 		    $file_ary 	= array();
 		    $file_count = count($file_post['name']);
@@ -93,8 +93,8 @@
 				$string: the string that *MIGHT* contain bb code that you want to parse
 			</summary>1
 		*/
-		function bb_parse($string) {
-	        $tags = 'b|i|u|size|url|img|video|spoiler|spoilerbox|color|hl|strike|quote';
+		public function bb_parse($string) {
+	        $tags = 'b|i|u|size|centre|url|heading|img|video|spoiler|spoilerbox|color|hl|strike|quote|profile|notice';
 
 	        while(preg_match_all('`\[(' . $tags . ')=?(.*?)\](.+?)\[/\1\]`', $string, $matches))
 	    	foreach($matches[0] as $key => $match)
@@ -102,16 +102,20 @@
 	            list($tag, $param, $innertext) = array($matches[1][$key], $matches[2][$key], $matches[3][$key]);
 	            switch($tag)
 	            {
-	                case 'b': 		$replacement = '<strong>' . $innertext . '</strong>'; break;
-	                case 'i': 		$replacement = '<em>' . $innertext . '</em>'; break;
-	                case 'u': 		$replacement = '<u>' . $innertext . '</u>'; break;
-					case 'strike':	$replacement = '<strike>' . $innertext . '</strike>'; break;
-	                case 'size': 	$replacement = '<span style = "font-size:' . $param . 'px;">' . $innertext . '</span>'; break;
-	                case 'color': 	$replacement = '<span style = "color: ' . $param . '">' . $innertext . '</span>'; break;
-	                case 'center': 	$replacement = '<span style = "text-align: center;">' . $innertext . '</div>'; break;
-					case 'img': 	$replacement = '<img src = "' . $innertext . '" class="img-responsive" />'; break;
-					case 'spoiler': $replacement = '<span class="spoiler">' . $innertext . '</span>'; break;
-					case 'hl': 		$replacement = '<span style = "background-color: red; color: white;">' . $innertext . '</span>'; break;
+	                case 'b': 			$replacement = '<strong>' . $innertext . '</strong>'; break;
+	                case 'i': 			$replacement = '<em>' . $innertext . '</em>'; break;
+	                case 'u': 			$replacement = '<u>' . $innertext . '</u>'; break;
+					case 'strike':		$replacement = '<strike>' . $innertext . '</strike>'; break;
+	                case 'size': 		$replacement = '<span style = "font-size:' . $param . 'px;">' . $innertext . '</span>'; break;
+	                case 'color': 		$replacement = '<span style = "color: ' . $param . '">' . $innertext . '</span>'; break;
+	                case 'center': 		$replacement = '<span style = "text-align: center;">' . $innertext . '</div>'; break;
+					case 'img': 		$replacement = '<img src = "' . $innertext . '" class="img-responsive" />'; break;
+					case 'spoiler': 	$replacement = '<span class="spoiler">' . $innertext . '</span>'; break;
+					case 'hl': 			$replacement = '<span style = "background-color: red; color: white;">' . $innertext . '</span>'; break;
+					case 'heading': 	$replacement = '<span class="newsArticleHeader">' . $innertext . '</span>'; break;
+					case 'centre': 		$replacement = '<center>' . $innertext . '</center>'; break;
+					case 'profile': 	$replacement = '<a href="https://osu.ppy.sh/u/' . $innertext . '">' . $innertext . '</a>'; break;
+					case 'notice': 		$replacement = '<div class="notice">' . $innertext . '</div>';
 	                case 'quote':
 						if($param)
 						{
@@ -194,16 +198,19 @@
 		                                    </div>';
 						}
 					break;
-	                case 'video':
-	                    $videourl = parse_url($innertext);
-	                    parse_str($videourl['query'], $videoquery);
-	                    if(strpos($videourl['host'], 'youtube.com') !== FALSE) $replacement = '<embed src="http://www.youtube.com/v/' . $videoquery['v'] . '" type="application/x-shockwave-flash" width="425" height="344"></embed>';
-	                    if(strpos($videourl['host'], 'google.com') !== FALSE) $replacement = '<embed src="http://video.google.com/googleplayer.swf?docid=' . $videoquery['docid'] . '" width="400" height="326" type="application/x-shockwave-flash"></embed>';
-	                break;
 	            }
 
 	            $string = str_replace($match, $replacement, $string);
 	        }
 	        return $string;
 	    }
+
+		public function checkIsAValidDate($myDateString){
+			return (bool)strtotime($myDateString);
+		}
+
+		// check for english name
+		public function check_file_uploaded_name($filename) {
+		    return (bool)((preg_match("`^[-0-9A-Za-z_\.]+$`i",$filename)) ? true : false);
+		}
 	}

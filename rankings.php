@@ -21,24 +21,8 @@
 		<?php include_once("./resources/includes/navbar.php"); ?>
 
 		<div class="container">
-			<ol class="breadcrumb">
-				<li><a href="./">Home</a></li>
-				<li class="active">About</li>
-			</ol>
+			
 
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="panel panel-primary news">
-						<div class="panel-body">
-							<?php
-								$about = $db -> fetch('SELECT about FROM serversettings', null);
-
-								echo nl2br($about['about']);
-							?>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 
 		<?php include_once('./resources/includes/loginpopup.php'); ?>

@@ -7,10 +7,10 @@
 			$db = new Db(Config::get('mysql/host'), Config::get('mysql/db'), Config::get('mysql/username'), Config::get('mysql/password'));
 			$db -> setFetchMode(PDO::FETCH_ASSOC);
 
-			$cookieExist = $db -> fetch('SELECT userid FROM cookies WHERE cookie = ?', [$cookie]);
+			$cookieExist = $db -> fetch('SELECT userId FROM cookies WHERE cookie = ?', [$cookie]);
 
 			if($cookieExist) {
-				$returnArr = $db -> fetch('SELECT userid, username, email, registrationDate, osuProfile, permissionId FROM users WHERE userid = ?', [$cookieExist["userid"]]);
+				$returnArr = $db -> fetch('SELECT userId, username, email, registrationDate, osuProfile, permissionId FROM users WHERE userId = ?', [$cookieExist["userId"]]);
 				$returnArr["loggedin"] = 1;
 				return $returnArr;
 			}
@@ -43,9 +43,9 @@
 			return $result["permissionName"];
 		}
 
-		public static function CreateSalt($length)
+		public static function createSalt($salt)
 		{
-			return Functions::generate_uniqueID($length);
+			return hash("sha512", $salt);
 		}
 
 		public static function hashPassword($password)

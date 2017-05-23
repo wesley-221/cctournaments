@@ -5,7 +5,7 @@
 	$db -> setFetchMode(PDO::FETCH_ASSOC);
 	$userData = User::authenticate(isset($_COOKIE[Config::get('cookie/cookie_name')]) ? $_COOKIE[Config::get('cookie/cookie_name')] : null);
 	$serverSettings = $db -> fetch('SELECT * FROM serverSettings');
-	
+
 	if($userData["loggedin"] == 1)
 		Header('Location: ./');
 ?>
@@ -13,15 +13,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<?php include_once("./resources/includes/meta.php"); ?>
+		<?php include_once("./resources/includes/link.php"); ?>
+
 		<title>Register - CustomAllOsu</title>
-
-		<link rel="shortcut icon" href="./resources/media/favicon.png">
-
-		<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
-		<link href="css/bootstrap.min.css" rel="stylesheet" />
-		<link href="resources/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
-		<link href="css/style.css" rel="stylesheet" />
 	</head>
 
 	<body>
@@ -46,8 +41,7 @@
 					$validUsername = $db -> fetch('SELECT * FROM users WHERE username = ?', [$sUsername]);
 
 					if($validUsername) {
-						// print_r($validUsername);
-						$sFinalString .= "This username is already in use. Please use a different one.";
+						$sFinalString .= "This username is already in use. Please use a different one. <br>";
 					}
 
 					if(!User::validatePassword($sPassword)) {
@@ -66,19 +60,31 @@
 						echo '<div class="alert alert-danger" role="alert"><b>Something went wrong!</b><br>' . $sFinalString . '</div>';
 					}
 					else {
-						$sUserHash = Functions::generate_uniqueID(50);
+						$sUserSalt = User::createSalt(Functions::generate_uniqueID(50));
 						$sUserPass = User::hashPassword($sPassword);
 						$regDate = date('Y-m-d');
 
-						$db -> execute('INSERT INTO users(username, password, salt, email, registrationDate, osuProfile) VALUES(?, ?, ?, ?, ?, ?)', [$sUsername, $sUserPass, $sUserHash, $sEmail, $regDate, $sProfile]);
+						if(!empty($_SERVER['HTTP_CLIENT_IP']))
+							$ip = $_SERVER['HTTP_CLIENT_IP'];
+						else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+							$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+						else
+							$ip = $_SERVER['REMOTE_ADDR'];
 
+						$countryCode = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip=' . $ip))['geoplugin_countryCode'];
+						$sMainMode = "osu!Catch";
+
+						if($countryCode == "") $countryCode = "NL";
+
+						$db -> execute('INSERT INTO users(username, password, salt, userMainMode, flag, email, registrationDate, osuProfile) VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
+															[$sUsername, $sUserPass, $sUserSalt, $sMainMode, $countryCode, $sEmail, $regDate, $sProfile]);
 						Header('Location: ./');
 					}
 				}
 			?>
 
 
-			<form action="./register.php" method="post">
+			<form action="./register" method="post">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h3 class="panel-title">Enter your account details here</h3>
@@ -86,34 +92,65 @@
 
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-xs-3"><label for="registerUsername">Username:</label></div>
-							<div class="col-xs-9"><input id="registerUsername" name="registerUsername" type="text" class="form-control" placeholder="Enter username here" autofocus value="<?php echo $sUsername; ?>" /></div>
+							<div class="col-xs-12">
+								<div class="form-group pmd-textfield pmd-textfield-floating-label">
+									<label for="registerUsername" class="control-label pmd-input-group-label">Enter username here</label>
+									<div class="input-group">
+										<div class="input-group-addon"><i class="material-icons pmd-sm">perm_identity</i></div>
+										<input id="registerUsername" name="registerUsername" type="text" class="form-control" value="<?php echo $sUsername; ?>" />
+									</div>
+								</div>
+							</div>
 						</div>
 
 						<div class="extraSpacing3"></div>
 
 						<div class="row">
-							<div class="col-xs-3"><label for="registerPassword">Password:</label></div>
-							<div class="col-xs-9"><input id="registerPassword" name="registerPassword" type="password" class="form-control" placeholder="Enter password here" /></div>
+							<div class="col-xs-12">
+								<div class="form-group pmd-textfield pmd-textfield-floating-label">
+									<label for="registerPassword" class="control-label pmd-input-group-label">Enter password here</label>
+									<div class="input-group">
+										<div class="input-group-addon"><i class="material-icons pmd-sm">lock_outline</i></div>
+										<input id="registerPassword" name="registerPassword" type="password" class="form-control" />
+									</div>
+								</div>
+							</div>
 						</div>
 
 						<div class="extraSpacing3"></div>
 
 						<div class="row">
-							<div class="col-xs-3"><label for="registerEmail">Email:</label></div>
-							<div class="col-xs-9"><input id="registerEmail" name="registerEmail" type="email" class="form-control" placeholder="Enter email here" value="<?php echo $sEmail; ?>" /></div>
+							<div class="col-xs-12">
+								<div class="form-group pmd-textfield pmd-textfield-floating-label">
+									<label for="registerEmail" class="control-label pmd-input-group-label">Enter email here</label>
+									<div class="input-group">
+										<div class="input-group-addon"><i class="material-icons pmd-sm">mail_outline</i></div>
+										<input id="registerEmail" name="registerEmail" type="email" class="form-control" value="<?php echo $sEmail; ?>" />
+									</div>
+								</div>
+							</div>
 						</div>
 
 						<div class="extraSpacing3"></div>
 
 						<div class="row">
-							<div class="col-xs-3"><label for="registerProfile">osu! profile:</label></div>
-							<div class="col-xs-9"><input id="registerProfile" name="registerProfile" type="text" class="form-control" placeholder="https://osu.ppy.sh/u/2407265" value="<?php echo $sProfile; ?>" /></div>
+							<div class="col-xs-12">
+								<div class="form-group pmd-textfield pmd-textfield-floating-label">
+									<label for="registerEmail" class="control-label pmd-input-group-label">osu! profile</label>
+									<div class="input-group">
+										<div class="input-group-addon"><i class="material-icons pmd-sm">videogame_asset</i></div>
+										<input id="registerProfile" name="registerProfile" type="text" class="form-control" value="<?php echo $sProfile; ?>" />
+									</div>
+								</div>
+							</div>
+
+							<!-- <div class="col-xs-3"><label for="registerProfile">osu! profile:</label></div>
+							<div class="col-xs-9"><input id="registerProfile" name="registerProfile" type="text" class="form-control" placeholder="https://osu.ppy.sh/u/2407265" value="<?php echo $sProfile; ?>" /></div> -->
 						</div>
 					</div>
 
 					<div class="panel-footer">
-						<button type="submit" class="btn btn-primary">Register</button>
+						<button type="submit" class="btn btn-primary pmd-btn-raised">Register</button>
 					</div>
 				</div>
 			</form>
@@ -124,4 +161,5 @@
 
 	<script src="js/jquery-3.2.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/propeller.min.js"></script>
 </html>
