@@ -15,6 +15,7 @@
 		return;
 	}
 
+	$curPage = 'admin';
 
 	// if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	// 	if(isset($_GET['p']) && $_GET['p'] == "edit") {

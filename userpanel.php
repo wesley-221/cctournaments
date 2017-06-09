@@ -10,6 +10,8 @@
 		Header('Location: ./');
 		return;
 	}
+
+	$curPage = 'admin';
 ?>
 
 <!DOCTYPE html>

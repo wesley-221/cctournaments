@@ -21,6 +21,8 @@
 		Header('Location: ./admin/settings');
 		return;
 	}
+
+	$curPage = 'admin';
 ?>
 
 <!DOCTYPE html>

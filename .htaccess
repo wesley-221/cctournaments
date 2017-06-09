@@ -13,8 +13,9 @@ RewriteCond %{SCRIPT_FILENAME} !-f
 
 RewriteRule ^$ 																		./index.php
 RewriteRule ^register$																./register.php
-RewriteRule ^logout?\/$																./logout.php
+RewriteRule ^logout$																./logout.php
 RewriteRule ^about$																	./about.php
+RewriteRule ^forum$																	./forum.php
 RewriteRule ^rankings$																./rankings.php
 RewriteRule ^report$																./report.php
 RewriteRule ^report\/([0-9]+)*$														./report.php?r=$1

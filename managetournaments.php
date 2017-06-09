@@ -11,6 +11,8 @@
 		return;
 	}
 
+	$curPage = 'admin';
+
 	$sTournamentName 				= isset($_POST['tournamentName']) ? $_POST['tournamentName'] : '';
 	$sTournamentMode 				= isset($_POST['tournamentMode']) ? $_POST['tournamentMode'] : '';
 	$sTournamentSlots 				= isset($_POST['tournamentSlots']) ? $_POST['tournamentSlots'] : '';

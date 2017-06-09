@@ -35,6 +35,8 @@
 
 	$userData = User::authenticate(isset($_COOKIE[Config::get('cookie/cookie_name')]) ? $_COOKIE[Config::get('cookie/cookie_name')] : null);
 	$serverSettings = $db -> fetch('SELECT * FROM serverSettings');
+
+	$curPage = 'none';
 ?>
 
 <!DOCTYPE html>

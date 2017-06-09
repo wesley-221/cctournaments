@@ -6,7 +6,7 @@
 	$userData = User::authenticate(isset($_COOKIE[Config::get('cookie/cookie_name')]) ? $_COOKIE[Config::get('cookie/cookie_name')] : null);
 	$serverSettings = $db -> fetch('SELECT * FROM serverSettings');
 
-	$curPage = 'settings';
+	$curPage = 'forum';
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +15,7 @@
 		<?php include_once("./resources/includes/meta.php"); ?>
 		<?php include_once("./resources/includes/link.php"); ?>
 
-		<title>Settings - CustomAllOsu</title>
+		<title>Forum - CustomAllOsu</title>
 	</head>
 
 	<body>
@@ -23,18 +23,49 @@
 		<?php include_once("./resources/includes/navbar.php"); ?>
 
 		<div class="container">
-			<ol class="breadcrumb">
-				<li><a href="./">Home</a></li>
-				<li class="active">Settings</li>
-			</ol>
 
-			<table class="table table-striped">
-				<tbody>
-					<tr>
-						<td>Option</td><td>Slider</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="category-x pmd-z-depth">
+				<div class="forumHeader">Title</div>
+
+				<div class="categoryBlock">
+					<div class="block">
+						<div class="row">
+							<div class="col-xs-1">
+								picca
+							</div>
+
+							<div class="col-xs-8">
+								<div class="blockTitle">blockTitle</div>
+								<div class="blockDescription">blockDescription</div>
+							</div>
+
+							<div class="col-xs-3">
+								text
+							</div>
+						</div>
+					</div>
+
+					<div style="margin-bottom: 5px;"></div>
+
+					<div class="block">
+						<div class="row">
+							<div class="col-xs-1">
+								picca
+							</div>
+
+							<div class="col-xs-8">
+								<div class="blockTitle">blockTitle</div>
+								<div class="blockDescription">blockDescription</div>
+							</div>
+
+							<div class="col-xs-3">
+								text
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<?php include_once('./resources/includes/loginpopup.php'); ?>

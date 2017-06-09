@@ -7,6 +7,8 @@
 	$db -> setFetchMode(PDO::FETCH_ASSOC);
 	$userData = User::authenticate(isset($_COOKIE[Config::get('cookie/cookie_name')]) ? $_COOKIE[Config::get('cookie/cookie_name')] : null);
 	$serverSettings = $db -> fetch('SELECT * FROM serverSettings');
+
+	$curPage = 'teams';
 ?>
 
 <!DOCTYPE html>
@@ -122,7 +124,7 @@
 
 								<div class="row">
 									<div class="col-xs-12">
-										<div class="inboxTile">
+										<div class="pmd-z-depth inboxTile">
 											<ul>
 												<li>Main mode</li>
 												<li>Highest ranked place in any tournament</li>
@@ -145,7 +147,7 @@
 				?>
 
 				<div class="col-xs-12">
-					<div class="inboxTile">
+					<div class="pmd-z-depth inboxTile">
 						<table class="table table-hover" id="tableVertical">
 							<thead>
 								<th width="140">Avatar</th><th>Team name</th><th>Team owner</th><th>Team main mode</th><th>Recruiting</th><th>Team score</th>

@@ -8,6 +8,8 @@
 	$db -> setFetchMode(PDO::FETCH_ASSOC);
 	$userData = User::authenticate(isset($_COOKIE[Config::get('cookie/cookie_name')]) ? $_COOKIE[Config::get('cookie/cookie_name')] : null);
 	$serverSettings = $db -> fetch('SELECT * FROM serverSettings');
+
+	$curPage = 'inbox';
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +75,7 @@
 					}
 					else {
 						// TODO: send a message to a single user instead of all users at the same time
-						
+
 						foreach($allUsers as $user) {
 							$senderUserId = $db -> fetch('SELECT userId FROM users WHERE username = ?', [$user]);
 							$curDate = date('Y-m-d H:i:s');

@@ -8,6 +8,8 @@
 
 	if($userData["loggedin"] == 1)
 		Header('Location: ./');
+
+	$curPage = 'register';
 ?>
 
 <!DOCTYPE html>

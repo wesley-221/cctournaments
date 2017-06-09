@@ -200,14 +200,13 @@ a.showAllNews {
 	==========================
 */
 .navbar-default {
-    background-color: #555555;
+    background-color: #78A0CB;
     /*border-color: #78A0CB;*/
-	border-top: 0;
+	border-top: 7px solid #2C6198;
 	border-left: 0;
 	border-right: 0;
-	border-bottom: 4px solid white;
+	border-bottom: 0;
 	border-radius: 0;
-	box-shadow: 0 5px 0 #555555;
 }
 /* Title */
 .navbar-default .navbar-brand {
@@ -224,7 +223,7 @@ a.showAllNews {
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
     color: white;
-	text-decoration: underline;
+	background-color: #2C6198;
 }
 .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:hover,

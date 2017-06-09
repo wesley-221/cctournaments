@@ -11,6 +11,7 @@
 	$reportType = isset($_POST['reportType']) ? $_POST['reportType'] : '';
 	$reportExplanation = isset($_POST['reportExplanation']) ? $_POST['reportExplanation'] : '';
 
+	$curPage = 'report';
 ?>
 
 <!DOCTYPE html>

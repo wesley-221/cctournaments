@@ -11,6 +11,8 @@
 	$sTeamRecruiting = isset($_POST['teamRecruiting']) ? $_POST['teamRecruiting'] : '';
 	$sTeamRequirements = isset($_POST['teamRequirements']) ? $_POST['teamRequirements'] : '';
 	$arrAvatar = isset($_FILES['avatar']) ? $_FILES['avatar'] : '';
+
+	$curPage = 'teams';
 ?>
 
 <!DOCTYPE html>

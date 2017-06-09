@@ -8,6 +8,8 @@
 	$userData = User::authenticate(isset($_COOKIE[Config::get('cookie/cookie_name')]) ? $_COOKIE[Config::get('cookie/cookie_name')] : null);
 	$serverSettings = $db -> fetch('SELECT * FROM serverSettings');
 
+	$curPage = 'tournaments';
+
 	// if($_SERVER['REQUEST_METHOD'] == 'POST') {
 	// 	if(isset($_GET['t'])) {
 	// 		$qTournament = $db -> fetch('SELECT tournamentId FROM tournaments WHERE tournamentId = ? LIMIT 1', [$_GET['t']]);
@@ -304,7 +306,8 @@
 					}
 				}
 				else {
-					echo '<table class="table table-hover">
+					echo '<div class="pmd-z-depth inboxTile">
+					<table class="table table-hover">
 						<thead>
 							<th>Tournament name</th><th>Player/team slots</th><th>Format</th><th>Registration end date</th><th>Start date</th><th>Ranking points</th>
 						</thead>
@@ -323,7 +326,7 @@
 						echo '<tr class="clickableRow" data-href="./tournaments/t/' . $tournament["tournamentId"] . '"><td>' . $tournament["tournamentName"] . '</td><td>' . $curSignups['signups'] . '/' . $tournament["tournamentSlots"] . '</td><td>' . $tournament["tournamentTeamFormat"] . '</td><td>' . date('d/m/Y', strtotime($tournament["tournamentRegistrationEndDate"])) . '</td><td>' . date('d/m/Y', strtotime($tournament["tournamentStartDate"])) . '</td><td>' . $tournament["tournamentRankingPoints"] . '</td></tr>';
 					}
 
-					echo '</tbody></table>';
+					echo '</tbody></table></div>';
 				}
 			} ?>
 		</div>

@@ -10,6 +10,8 @@
 		Header('Location: ./teams');
 		return;
 	}
+
+	$curPage = 'teams';
 ?>
 
 <!DOCTYPE html>
@@ -224,7 +226,7 @@
 
 												echo $_GET['t'];
 											?>
-											<form action="./manageteams/<?php echo $_GET['t']; ?>" method="post" enctype="multipart/form-data">
+											<form action="./" method="post" enctype="multipart/form-data">
 												<table class="table">
 													<thead>
 														<th>Setting</th><th>Value</th>
@@ -288,7 +290,7 @@
 				?>
 				<div class="row">
 					<div class="col-xs-12">
-						<div class="inboxTile">
+						<div class="pmd-z-depth inboxTile">
 							<table class="table table-hover">
 								<thead>
 									<th>Teamname</th><th>Team owner</th><th>Main mode</th><th>Ranking points</th>
@@ -326,7 +328,7 @@
 	<script>
 		$(document).ready(function($) {
 			$("#avatarSelect").on('change', function() {
-				
+
 			});
 
 			$(".recruitUserAccept").on('click', function() {
